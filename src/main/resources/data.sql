@@ -1,0 +1,2 @@
+insert into books(id, title, author, year, publisher, cost) values(001,'Rich dad poor dad','Robert Kiyosaki',1997, 'Warner Business Books', 47000.0);
+insert into books(id, title, author, year, publisher, cost) values(002,'The Soul of a Butterfly','Muhammad Ali',2003,'Simon & Schuster',42500.0);
