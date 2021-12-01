@@ -5,12 +5,12 @@ import com.example.BookMSJunitTest.repository.IBookRepository;
 import com.example.BookMSJunitTest.utils.Exceptions.ResourceNotFoundException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -115,7 +115,8 @@ public class BookServiceTest {
 
     @Test
     public void findByPublisher_success() {
-        when(bookRepositoryMock.findByPublisher(anyString())).thenReturn(Arrays.asList(new Book(2,"The Soul of a Butterfly","Muhammad Ali",2003,"Simon & Schuster",42500.0), new Book(3, "The Greatest: My Own Story", "Muhammad Ali",1975,"Random House",59500.0)));
+        List<Book> books = Arrays.asList(new Book(2,"The Soul of a Butterfly","Muhammad Ali",2003,"Random House",42500.0), new Book(3, "The Greatest: My Own Story", "Muhammad Ali",1975,"Random House",59500.0));
+        when(bookRepositoryMock.findByPublisher(anyString())).thenReturn(books);
 
         assertEquals("The Soul of a Butterfly", bookService.findByPublisher("Random House").get(0).getTitle());
     }
