@@ -1,6 +1,7 @@
 package com.example.BookMSJunitTest.controller;
 
 import com.example.BookMSJunitTest.model.Book;
+import com.example.BookMSJunitTest.repository.IBookRepository;
 import com.example.BookMSJunitTest.service.BookService;
 import com.example.BookMSJunitTest.utils.APIResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,11 @@ public class BookController {
     @Autowired
     private BookService bookService;
 
+    @Autowired
+    private IBookRepository bookRepository;
+
     @PostMapping("/")
-    public ResponseEntity<?> addBook(@RequestBody Book book){
+    public ResponseEntity<?> addBook(@RequestBody Book book) {
         return ResponseEntity.status(HttpStatus.CREATED).body(bookService.createBook(book.getTitle(), book.getAuthor(), book.getYear(), book.getPublisher(), book.getCost(), book.getId()));
     }
 
@@ -29,12 +33,11 @@ public class BookController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable(name = "id") int id) {
-
-        Book book = bookService.getById(id);
-        if (book != null) {
-            return ResponseEntity.ok(book);
+        if (!bookRepository.existsById(id)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new APIResponse(false, "Book not found"));
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new APIResponse(false, "Book not found"));
+        Book book = bookService.getById(id);
+        return ResponseEntity.ok(book);
     }
 
     @GetMapping("/by-publisher/{publisher}")
